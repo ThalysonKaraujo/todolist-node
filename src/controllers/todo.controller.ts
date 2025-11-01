@@ -8,7 +8,7 @@ export const todosController = {
   },
 
   getById: async (req: Request, res: Response) => {
-    const id = Number(req.params.id);
+    const id = req.params.id as unknown as number;
     const todo = await todosService.getById(id);
     res.json(todo);
   },
@@ -20,14 +20,14 @@ export const todosController = {
   },
 
   update: async (req: Request, res: Response) => {
-    const id = Number(req.params.id);
+    const id = req.params.id as unknown as number;
     const { title, description } = req.body;
     const todo = await todosService.updateTask(id, { title, description });
     res.status(200).json(todo);
   },
 
   delete: async (req: Request, res: Response) => {
-    const id = Number(req.params.id);
+    const id = req.params.id as unknown as number;
     await todosService.deleteTask(id);
     return res.status(204).send();
   },

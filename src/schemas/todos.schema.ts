@@ -12,7 +12,10 @@ export const updateTodoSchema = z.object({
 });
 
 export const todoParamsSchema = z.object({
-  id: z.string().regex(/^\d+$/, 'ID deve ser um número válido'),
+  id: z
+    .string()
+    .regex(/^\d+$/, 'ID deve ser um número válido')
+    .transform(Number),
 });
 
 export type CreateTodoInput = z.infer<typeof createTodosSchema>;
