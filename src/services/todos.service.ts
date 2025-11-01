@@ -1,3 +1,5 @@
+import { AppError } from '../errors/AppError.js';
+import { NotFoundError } from '../errors/NotFoundError.js';
 import { todosRepository } from '../repositories/todos.repository.js';
 
 export const todosService = {
@@ -8,7 +10,7 @@ export const todosService = {
   getById: async (id: number) => {
     const todo = await todosRepository.findById(id);
     if (!todo) {
-      throw new Error('Task não encontrada');
+      throw new AppError('Task não encontrada');
     }
     return todo;
   },
@@ -20,7 +22,7 @@ export const todosService = {
   deleteTask: async (id: number) => {
     const todo = await todosRepository.findById(id);
     if (!todo) {
-      throw new Error('Essa Task não existe');
+      throw new NotFoundError('Essa Task não existe');
     }
     await todosRepository.delete(id);
     return { message: 'Task deletada com sucesso' };
@@ -32,7 +34,7 @@ export const todosService = {
   ) => {
     const exists = await todosRepository.findById(id);
     if (!exists) {
-      throw new Error('Essa Task não existe');
+      throw new NotFoundError('Essa Task não existe');
     }
     return await todosRepository.update(id, data);
   },
