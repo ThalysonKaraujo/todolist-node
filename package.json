@@ -17,16 +17,20 @@
   "license": "MIT",
   "description": "",
   "dependencies": {
+    "bcryptjs": "^3.0.2",
     "dotenv": "^17.2.3",
     "drizzle-orm": "^0.44.7",
     "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
     "postgres": "^3.4.7",
     "zod": "^4.1.12"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.0",
     "@types/express": "^5.0.5",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^24.9.2",
+    "@types/typescript": "^0.4.29",
     "drizzle-kit": "^0.31.6",
     "eslint": "^9.39.0",
     "eslint-config-prettier": "^10.1.8",
