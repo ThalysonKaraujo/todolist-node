@@ -1,9 +1,11 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { todosService } from '../../services/todos.service.js';
 import { todosRepository } from '../../repositories/todos.repository.js';
-import { except } from 'drizzle-orm/gel-core';
 
 vi.mock('../../repositories/todos.repository.js');
+
+// Cria versões tipadas dos mocks
+const mockedRepository = vi.mocked(todosRepository);
 
 describe('TodosService', () => {
   beforeEach(() => {
@@ -20,7 +22,7 @@ describe('TodosService', () => {
         isFinished: false,
       };
 
-      (todosRepository.create as any).mockResolvedValue(mockTask);
+      mockedRepository.create.mockResolvedValue(mockTask);
 
       const result = await todosService.createTask({
         title: 'Test Task',
@@ -28,7 +30,7 @@ describe('TodosService', () => {
       });
 
       expect(result).toEqual(mockTask);
-      expect(todosRepository.create).toHaveBeenCalledWith({
+      expect(mockedRepository.create).toHaveBeenCalledWith({
         title: 'Test Task',
         description: 'Test Description',
       });
@@ -45,16 +47,16 @@ describe('TodosService', () => {
         isFinished: false,
       };
 
-      (todosRepository.findById as any).mockResolvedValue(mockTask);
+      mockedRepository.findById.mockResolvedValue(mockTask);
 
       const result = await todosService.getById(1);
 
       expect(result).toEqual(mockTask);
-      expect(todosRepository.findById).toHaveBeenCalledWith(1);
+      expect(mockedRepository.findById).toHaveBeenCalledWith(1);
     });
 
     it('should throw NotFound when search for a non existing id', async () => {
-      (todosRepository.findById as any).mockResolvedValue(undefined);
+      mockedRepository.findById.mockResolvedValue(undefined);
 
       await expect(todosService.getById(999)).rejects.toThrow(
         'Task não encontrada'
@@ -78,8 +80,8 @@ describe('TodosService', () => {
         isFinished: true,
       };
 
-      (todosRepository.findById as any).mockResolvedValue(existingTask);
-      (todosRepository.update as any).mockResolvedValue(updatedTask);
+      mockedRepository.findById.mockResolvedValue(existingTask);
+      mockedRepository.update.mockResolvedValue(updatedTask);
 
       const result = await todosService.updateTask(1, {
         title: 'New Title',
@@ -87,15 +89,15 @@ describe('TodosService', () => {
       });
 
       expect(result).toEqual(updatedTask);
-      expect(todosRepository.findById).toHaveBeenCalledWith(1);
-      expect(todosRepository.update).toHaveBeenCalledWith(1, {
+      expect(mockedRepository.findById).toHaveBeenCalledWith(1);
+      expect(mockedRepository.update).toHaveBeenCalledWith(1, {
         title: 'New Title',
         isFinished: true,
       });
     });
 
     it('should throw NotFoundError when updating non-existent task', async () => {
-      (todosRepository.findById as any).mockResolvedValue(undefined);
+      mockedRepository.findById.mockResolvedValue(undefined);
 
       await expect(
         todosService.updateTask(999, { title: 'New Title' })
@@ -113,18 +115,18 @@ describe('TodosService', () => {
         isFinished: false,
       };
 
-      (todosRepository.findById as any).mockResolvedValue(existingTask);
-      (todosRepository.delete as any).mockResolvedValue(undefined);
+      mockedRepository.findById.mockResolvedValue(existingTask);
+      mockedRepository.delete.mockResolvedValue(undefined);
 
       const result = await todosService.deleteTask(1);
 
       expect(result).toEqual({ message: 'Task deletada com sucesso' });
-      expect(todosRepository.findById).toHaveBeenCalledWith(1);
-      expect(todosRepository.delete).toHaveBeenCalledWith(1);
+      expect(mockedRepository.findById).toHaveBeenCalledWith(1);
+      expect(mockedRepository.delete).toHaveBeenCalledWith(1);
     });
 
     it('should throw NotFoundError when deleting non-existent task', async () => {
-      (todosRepository.findById as any).mockResolvedValue(undefined);
+      mockedRepository.findById.mockResolvedValue(undefined);
 
       await expect(todosService.deleteTask(999)).rejects.toThrow(
         'Essa Task não existe'
@@ -151,16 +153,16 @@ describe('TodosService', () => {
         },
       ];
 
-      (todosRepository.findAll as any).mockResolvedValue(mockTasks);
+      mockedRepository.findAll.mockResolvedValue(mockTasks);
 
       const result = await todosService.getAll();
 
       expect(result).toEqual(mockTasks);
-      expect(todosRepository.findAll).toHaveBeenCalled();
+      expect(mockedRepository.findAll).toHaveBeenCalled();
     });
 
     it('should return empty array when no tasks exist', async () => {
-      (todosRepository.findAll as any).mockResolvedValue([]);
+      mockedRepository.findAll.mockResolvedValue([]);
 
       const result = await todosService.getAll();
 
