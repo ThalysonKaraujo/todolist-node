@@ -52,7 +52,3 @@ export const authService = {
     }
   },
 };
-
-async function gerarToken(payload, jwtSecret!, options){
-
-}
