@@ -223,18 +223,6 @@ npm run format:fix   # Formata o código
 - Cookie com `sameSite: 'lax'` para proteção CSRF
 - Validação de token em todas as rotas protegidas
 
-## 🎯 Próximos Passos
-
-- [x] Implementar autenticação JWT
-- [ ] Adicionar documentação com Swagger/OpenAPI
-- [ ] Implementar validação de dados com Zod
-- [ ] Adicionar testes de integração
-- [ ] Implementar paginação nos endpoints
-- [ ] Adicionar filtros e ordenação
-- [ ] Implementar refresh tokens
-- [ ] Adicionar logout
-- [ ] Deploy em produção
-
 ## 📚 Aprendizados
 
 Este projeto me permitiu entender:
