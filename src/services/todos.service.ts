@@ -1,41 +1,49 @@
-import { AppError } from '../errors/AppError.js';
 import { NotFoundError } from '../errors/NotFoundError.js';
 import { todosRepository } from '../repositories/todos.repository.js';
 
 export const todosService = {
-  getAll: async () => {
-    return await todosRepository.findAll();
+  getAll: async (userId: number) => {
+    return await todosRepository.findAll(userId);
   },
 
-  getById: async (id: number) => {
-    const todo = await todosRepository.findById(id);
+  getById: async (userId: number, todoId: number) => {
+    const todo = await todosRepository.findById(todoId, userId);
     if (!todo) {
-      throw new AppError('Task não encontrada');
+      throw new NotFoundError('Task não encontrada');
     }
     return todo;
   },
 
-  createTask: async (data: { title: string; description?: string }) => {
-    return await todosRepository.create(data);
+  createTask: async (
+    userId: number,
+    data: { title: string; description?: string }
+  ) => {
+    const todoData = {
+      ...data,
+      userId: userId,
+    };
+
+    const newTodo = await todosRepository.create(todoData);
+    return newTodo;
   },
 
-  deleteTask: async (id: number) => {
-    const todo = await todosRepository.findById(id);
-    if (!todo) {
+  deleteTask: async (userId: number, todoId: number) => {
+    const result = await todosRepository.delete(todoId, userId);
+    if (!result) {
       throw new NotFoundError('Essa Task não existe');
     }
-    await todosRepository.delete(id);
     return { message: 'Task deletada com sucesso' };
   },
 
   updateTask: async (
-    id: number,
+    userId: number,
+    todoId: number,
     data: { title?: string; description?: string; isFinished?: boolean }
   ) => {
-    const exists = await todosRepository.findById(id);
-    if (!exists) {
+    const updatedTask = await todosRepository.update(todoId, userId, data);
+    if (!updatedTask) {
       throw new NotFoundError('Essa Task não existe');
     }
-    return await todosRepository.update(id, data);
+    return updatedTask;
   },
 };

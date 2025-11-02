@@ -3,12 +3,8 @@ import * as jwt from 'jsonwebtoken';
 import { NotFoundError } from '../errors/NotFoundError.js';
 import { AppError } from '../errors/AppError.js';
 
-interface AuthRequest extends Request {
-  user?: { id: number };
-}
-
 export async function isAuthenticated(
-  req: AuthRequest,
+  req: Request,
   res: Response,
   next: NextFunction
 ) {
