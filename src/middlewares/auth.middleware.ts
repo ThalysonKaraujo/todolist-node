@@ -1,5 +1,5 @@
 import type { Request, Response, NextFunction } from 'express';
-import * as jwt from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 import { NotFoundError } from '../errors/NotFoundError.js';
 import { AppError } from '../errors/AppError.js';
 

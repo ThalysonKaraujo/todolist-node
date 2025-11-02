@@ -1,5 +1,5 @@
-import * as bcrypt from 'bcryptjs';
-import * as jwt from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
 import { authRepository } from '../repositories/auth.repository.js';
 import { AppError } from '../errors/AppError.js';
 import { NotFoundError } from '../errors/NotFoundError.js';
@@ -42,7 +42,9 @@ export const authService = {
         throw new AppError('Segredo JWT não configurado', 500);
       }
 
-      const options = { expiresIn: '7d' } as jwt.SignOptions;
+      // Asserção simplificada para evitar erro de importação de tipo
+      // eslint-disable-next-line
+      const options = { expiresIn: '7d' } as any;
 
       const token = jwt.sign(payload, jwtSecret!, options);
       // eslint-disable-next-line

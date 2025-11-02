@@ -47,8 +47,6 @@ export const todosRepository = {
       .delete(todos)
       .where(and(eq(todos.id, todoId), eq(todos.userId, userId)))
       .returning();
-
-    // Retorna o resultado completo para que o Service possa checar o rowCount
     return result;
   },
 };
