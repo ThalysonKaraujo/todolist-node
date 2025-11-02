@@ -23,7 +23,7 @@ export const authService = {
     });
     return newUser;
   },
-  login: async (data: { email: string; password: string }) => {
+  loginUser: async (data: { email: string; password: string }) => {
     const { email, password } = data;
 
     const existingUser = await authRepository.findByEmail(email);
@@ -45,10 +45,14 @@ export const authService = {
       const options = { expiresIn: '7d' } as jwt.SignOptions;
 
       const token = jwt.sign(payload, jwtSecret!, options);
-
+      // eslint-disable-next-line
       const { password: __, ...userWithoutPassword } = existingUser;
 
       return { token, user: userWithoutPassword };
     }
   },
 };
+
+async function gerarToken(payload, jwtSecret!, options){
+
+}
